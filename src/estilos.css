@@ -43,3 +43,14 @@ th,td{padding:9px 8px;border-bottom:1px solid var(--br);text-align:left;white-sp
 .ft{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;line-height:1.4}.ph{flex:1 1 220px;border:1px dashed var(--br);border-radius:8px;padding:10px}
 .ph input{padding:4px}.ph img{width:100%;margin-top:6px;border-radius:6px}
 .err{background:var(--bad);color:var(--badt);padding:8px 12px;border-radius:8px}
+
+
+/* Teléfonos */
+@media (max-width: 600px) {
+  input, select, textarea { font-size: 16px; }   /* evita el zoom automático del iPhone */
+  .wrap { padding: 10px; }
+  .doc { padding: 16px 14px; line-height: 1.8; }
+  .ghost, .pri, .dng { min-height: 40px; }
+  .kv { grid-template-columns: 1fr; gap: 2px 0; }
+  .kv dd { margin-bottom: 8px; }
+}
