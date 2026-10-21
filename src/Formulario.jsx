@@ -56,7 +56,7 @@ export default function Formulario({ tipo, asociado, uid, volver, alAcabar }) {
     
     if (nuevo && !/^[A-Za-z0-9._-]+$/.test(dato("Código de trabajador").trim()))
       return setError("Escriba su Id en «código de trabajador».");
-
+    if (tipo === "renun" && !window.confirm("Al enviar esta solicitud ya no podrá entrar a la página con su cuenta. Para volver tendría que pedir su ingreso como nuevo. ¿Desea continuar?")) return;
     setEnviando(true);
     const datos = [...f.querySelectorAll("[data-l]")]
       .filter(x => !x.dataset.skip && x.value)
@@ -75,11 +75,16 @@ export default function Formulario({ tipo, asociado, uid, volver, alAcabar }) {
     let err = a.error || b.error;
     if (!err) {
       const [tabla, fila] = nuevo
-        ? ["ingresos", { nombre: dato("Nombre"), cedula: dato("Cédula").replace(/\D/g, ""), tarjeta: dato("Código de trabajador").trim(), datos, cedula_frente: frente, cedula_reverso: reverso }]
+        ? ["ingresos", { nombre: dato("Nombre"), cedula: dato("Cédula").replace(/\D/g, ""), tarjeta: dato("Código de trabajador").trim(), correo: dato("Correo electrónico").trim().toLowerCase(), datos, datos, cedula_frente: frente, cedula_reverso: reverso }]
         : ["solicitudes", { asociado_id: asociado.id, tipo, datos, cedula_frente: frente, cedula_reverso: reverso }];
       ({ error: err } = await supabase.from(tabla).insert(fila));
     }
     if (err) { setEnviando(false); return setError("No se pudo enviar la solicitud. Intente de nuevo."); }
+    
+    if (tipo === "renun") {
+      sessionStorage.setItem("aviso", "Su solicitud de renuncia fue enviada y su cuenta se cerró.");
+      return supabase.auth.signOut({ scope: "local" });
+    }
     alAcabar("Solicitud enviada. Queda pendiente de aprobación.");
   }
 

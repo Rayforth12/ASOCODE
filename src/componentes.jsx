@@ -1,17 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
 import { supabase } from "./supabase";
 import { TYPES } from "./formularios";
+import { LOGO } from "./marca";
+import { descargarSolicitud } from "./pdf";
 
 const fecha = d => new Date(d).toLocaleDateString("es-CR");
 
 export const Encabezado = ({ sub, salir }) => (
   <header className="top">
-    <div><b>ASOCODE</b> <span className="mut">{sub}</span></div>
+    <div className="marca"><img src={LOGO} alt="ASOCODE" /><span><b>ASOCODE</b> <span className="mut">{sub}</span></span></div>
     <button className="ghost" onClick={salir}>Salir</button>
   </header>
 );
 
-export function Tabla({ filas, admin, ver }) {
+export function Tabla({ filas, admin, ver, pdf }) {
   if (!filas.length) return <p className="mut">Todavía no hay solicitudes.</p>;
   return (
     <div className="tw">
@@ -24,7 +26,7 @@ export function Tabla({ filas, admin, ver }) {
               {admin && <td>{s.asociados?.nombre}</td>}
               <td>{TYPES[s.tipo].t}</td>
               <td><span className={"b " + s.estado}>{s.estado}</span></td>
-              <td><button className="ghost" onClick={() => ver(s)}>Ver</button></td>
+              <td><button className="ghost" onClick={() => ver(s)}>Ver</button>{pdf && <> <button className="ghost" onClick={() => pdf(s)}>PDF</button></>}</td>
             </tr>
           ))}
         </tbody>
@@ -66,6 +68,7 @@ export function Detalle({ sol, admin, cerrar, resolver }) {
               <button className="dng" onClick={() => resolver(sol, "Rechazada")}>Rechazar</button>
             </>
           )}
+          {admin && <button className="ghost" onClick={() => descargarSolicitud(sol)}>Descargar PDF</button>}
           <button className="ghost" onClick={cerrar}>Cerrar</button>
         </p>
       </div>

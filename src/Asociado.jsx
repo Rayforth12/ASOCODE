@@ -3,6 +3,7 @@ import { supabase } from "./supabase";
 import { TYPES } from "./formularios";
 import { Encabezado, Tabla, Detalle } from "./componentes";
 import Formulario from "./Formulario";
+import { LOGO } from "./marca";
 
 export default function Asociado({ asociado, uid, salir }) {
   const [sols, setSols] = useState([]);
@@ -30,7 +31,7 @@ export default function Asociado({ asociado, uid, salir }) {
       <Encabezado sub={asociado.nombre} salir={salir} />
       <main className="wrap">
         {msg && <div className="ok">{msg}</div>}
-        <h2>¿Qué solicitud necesita hacer?</h2>
+        <div className="hero"><img src={LOGO} alt="" /><div><h1>Bienvenido(a)</h1><p className="mut">{asociado.nombre}</p></div></div>
         <div className="grid">
           {Object.entries(TYPES).map(([k, v]) => (
             <button key={k} className="card tile" onClick={() => { setMsg(""); setTipo(k); }}>

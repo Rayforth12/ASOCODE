@@ -5,6 +5,7 @@ import PrimerIngreso from "./PrimerIngreso";
 import Asociado from "./Asociado";
 import NuevoIngreso from "./NuevoIngreso";
 import Admin from "./Admin";
+import PedirCorreo from "./PedirCorreo";
 
 export default function App() {
   const [sesion, setSesion] = useState(undefined); // undefined = todavía cargando
@@ -35,6 +36,8 @@ export default function App() {
   const cambiarClave = sesion.user.user_metadata?.cambiar_clave === true;
   if (cambiarClave || !perfil.tiene)
     return <PrimerIngreso cambiarClave={cambiarClave} salir={salir} listo={() => setVersion(version + 1)} />;
+  if (perfil.asociado && !perfil.asociado.correo)
+    return <PedirCorreo salir={salir} listo={() => setVersion(version + 1)} />;
   if (perfil.admin) return <Admin salir={salir} />;
   if (!perfil.asociado) return <NuevoIngreso uid={uid} salir={salir} />;
   return <Asociado asociado={perfil.asociado} uid={uid} salir={salir} />;

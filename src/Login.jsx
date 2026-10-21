@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase, correoDe } from "./supabase";
 import { PREGUNTAS } from "./preguntas";
+import { LOGO } from "./marca";
 
 const pestanas = { entrar: "Entrar", nuevo: "Soy nuevo", olvide: "Olvidé mi clave" };
 const botones = { entrar: "Entrar", nuevo: "Crear cuenta", olvide: "Cambiar clave" };
@@ -9,13 +10,14 @@ export default function Login() {
   const [modo, setModo] = useState("entrar");
   const [f, setF] = useState({ usuario: "", clave: "", clave2: "", pregunta: PREGUNTAS[0], respuesta: "" });
   const [error, setError] = useState("");
-  const [ok, setOk] = useState("");
+  const [ok, setOk] = useState(() => sessionStorage.getItem("aviso") || "");
   const [espera, setEspera] = useState(false);
   const set = k => e => setF({ ...f, [k]: e.target.value });
   const ir = m => { setModo(m); setError(""); setOk(""); };
 
   async function enviar(e) {
     e.preventDefault(); setError(""); setOk("");
+    sessionStorage.removeItem("aviso");
     const usuario = f.usuario.trim();
     const cedula = usuario.replace(/\D/g, "");
     if (modo !== "entrar") {
@@ -47,7 +49,8 @@ export default function Login() {
   return (
     <main className="wrap">
       <form className="card" style={{ maxWidth: 420, margin: "40px auto" }} onSubmit={enviar}>
-        <h1 style={{ marginTop: 0 }}>Portal ASOCODE</h1>
+        <img className="login-logo" src={LOGO} alt="ASOCODE" />
+        <h1 style={{ marginTop: 0, textAlign: "center" }}>Portal ASOCODE</h1>
         <div className="tabs">
           {Object.entries(pestanas).map(([k, v]) => (
             <button key={k} type="button" className={"ghost" + (modo === k ? " on" : "")} onClick={() => ir(k)}>{v}</button>
@@ -56,7 +59,7 @@ export default function Login() {
         {ok && <div className="ok">{ok}</div>}
         {modo === "nuevo" && <p className="mut">Para pedir su ingreso a la asociación. Su cédula será su usuario.</p>}
 
-        <label>{modo === "nuevo" ? "Cédula" : "Id"}</label>
+        <label>Cédula</label>
         <input required value={f.usuario} onChange={set("usuario")} autoComplete="username" />
 
         {modo === "olvide" && (
