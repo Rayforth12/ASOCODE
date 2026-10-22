@@ -4,6 +4,7 @@ import { LOGO } from "./marca";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const today = () => new Date().toLocaleDateString("sv");
 let me = null;
+let fechaDoc = null;
 
 export const TYPES={
 admision:{t:"Admisión y deducción",d:"Autorización de deducción, ahorro del 5% y ahorro extraordinario"},
@@ -17,7 +18,7 @@ renun:{t:"Carta de renuncia",d:"Renunciar a la asociación"}};
 const I=(l,o={})=>{const ro=o.v!=null;return`<input class="ln${ro?" ro":""}" data-l="${l}"${ro?` value="${esc(o.v)}" readonly data-skip="1"`:o.opt?"":" required"}${o.m?` type="number" min="0" data-m="1"${o.max?` max="${o.max}"`:""}${o.g?' data-g="1"':""}`:o.t?` type="${o.t}"`:""}${o.w?` style="width:${o.w}em"`:""}>`};
 const A=(l,r=3)=>`<textarea class="ln ta" data-l="${l}" rows="${r}"></textarea>`;
 const S=(l,o)=>`<select class="ln" data-l="${l}" style="width:auto">${o.map(x=>`<option>${x}</option>`).join("")}</select>`;
-const N=()=>I("Nombre",{v:me.n,w:24}),C=()=>I("Cédula",{v:me.c,w:9}),T=()=>I("Tarjeta",{v:me.t,w:6}),D=()=>"<b>"+today()+"</b>";
+const N=()=>I("Nombre",{v:me.n,w:24}),C=()=>I("Cédula",{v:me.c,w:9}),T=()=>I("Tarjeta",{v:me.t,w:6}),D=()=>"<b>"+(fechaDoc||today())+"</b>";
 const ORG='<div class="hd">ASOCIACION SOLIDARISTA<br>CORRUGADOS DEL ATLANTICO S.A</div>';
 const ph=(n,l)=>`<div class="ph"><b>${l}</b><br><input type="file" name="${n}" accept="image/*" required><img hidden alt="${l}"></div>`;
 const foot=(t,ap)=>`<div class="ft"><div class="full" style="flex:1 1 100%"><b>${t||"Firma solicitante"}:</b> en lugar de firmar, suba una foto de su cédula por ambos lados.</div>${ph("cf","Cédula, parte frontal")}${ph("cr","Cédula, parte trasera")}${ap?`<div class="ph"><b>Aprobado Junta Directiva</b><br><span class="mut">Lo completa la Junta Directiva al aprobar.</span></div>`:""}</div>`;
@@ -32,7 +33,8 @@ serv:()=>`${ORG}<p class="ti">SOLICITUD CRÉDITO SERVICIOS PÚBLICOS</p><p>Fecha
 renun:()=>`<p>Estimados Miembros de Junta Directiva</p><p><b>ASOCODE</b></p><p>Saludos cordiales:</p><p>El suscrito ${N()} con el número de cédula ${C()} con el número de tarjeta ${T()}, notifico en la presente carta, mi renuncia a ser miembro de la asociación solidarista de empleados corrugados del atlántico, por motivos personales. También solicito cancelar, mis deudas en la asociación con mis ahorros.</p><p>Sin más que decir, agradezco la ayuda brindada.</p>${foot("Firma y cédula")}`};
 
 // Devuelve el HTML del formulario con los datos del asociado ya puestos.
-export function cuerpo(tipo, a) {
+export function cuerpo(tipo, a, fecha) {
+  fechaDoc = fecha || null;
   // Sin asociado (nuevo ingreso): el nombre y la cédula quedan para llenar.
   const c = a && String(a.cedula).replace(/^(\d)(\d{4})(\d{4})$/, "$1-$2-$3");
   me = a ? { n: a.nombre, c, t: a.tarjeta } : { n: null, c: null, t: null };

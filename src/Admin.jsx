@@ -54,7 +54,7 @@ export default function Admin({ salir }) {
       if (motivo === null) return;
       ({ error } = await supabase.from("ingresos").update({ estado, motivo_rechazo: motivo || null }).eq("id", ing.id));
     }
-    if (error) return setMsg("No se pudo guardar. Si iba a aprobar, revise que la tarjeta, la cédula y el correo no existan ya.");
+    if (error) return setMsg(estado === "Aprobada" ? "No se pudo aprobar: " + error.message : "No se pudo guardar el cambio.");
     setVer(null);
     setMsg("Solicitud de ingreso " + estado.toLowerCase() + ".");
     cargar();
@@ -72,7 +72,7 @@ export default function Admin({ salir }) {
     <>
       <Encabezado sub="Administración" salir={salir} />
       <main className="wrap">
-        {msg && <div className="ok">{msg}</div>}
+        {msg && <div className={msg.startsWith("No se pudo") ? "err" : "ok"}>{msg}</div>}
         <div className="tabs">
           <button className={"ghost" + (tab === "sol" ? " on" : "")} onClick={() => cambiar("sol")}>Solicitudes ({pendientes} pendientes)</button>
           <button className={"ghost" + (tab === "aso" ? " on" : "")} onClick={() => cambiar("aso")}>Asociados</button>

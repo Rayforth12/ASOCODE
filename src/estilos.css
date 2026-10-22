@@ -1,6 +1,5 @@
-:root{--bg:#f4f9ee;--card:#fff;--tx:#1d2b17;--mut:#5d6f55;--br:#d9e6cc;--ac:#2f7d1f;--ac2:#e6f3da;--y:#f5b800;--bad:#fbe3e0;--badt:#a8281b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111a0d;--card:#1a2615;--tx:#e9f2e2;--mut:#a5b99a;--br:#2d3d25;--ac:#6cc24a;--ac2:#22331a;--bad:#3a1f1c;--badt:#ff9d92}}
-:root[data-theme="dark"]{--bg:#111a0d;--card:#1a2615;--tx:#e9f2e2;--mut:#a5b99a;--br:#2d3d25;--ac:#6cc24a;--ac2:#22331a;--bad:#3a1f1c;--badt:#ff9d92}
+:root{--bg:#fafcf8;--card:#fff;--tx:#22301f;--mut:#67775f;--br:#e3ebdb;--ac:#33803a;--ac2:#eef6e9;--y:#f3d977;--bad:#fbe3e0;--badt:#a8281b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
@@ -62,7 +61,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--y);outline-offse
 .pri{box-shadow:0 2px 0 rgba(0,0,0,.15)}.pri:hover{filter:brightness(1.08)}
 .logo-doc{float:right;height:60px;width:auto;margin:0 0 8px 14px}
 .doc{border-top:6px solid var(--y)}
-@media (prefers-color-scheme: dark){.pri,.ghost.on{color:#10200a}}
+
 
 
 /* Teléfonos */
@@ -74,3 +73,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--y);outline-offse
   .kv { grid-template-columns: 1fr; gap: 2px 0; }
   .kv dd { margin-bottom: 8px; }
 }
+
+/* Colores más suaves y más blanco */
+body{background:#fff}
+.top{border-bottom:2px solid var(--y);box-shadow:none}
+.card{box-shadow:none}
+.tile{border-top:3px solid var(--y)}
+.tile:hover,.tile:focus-visible{border-color:var(--ac);box-shadow:0 6px 16px rgba(51,128,58,.10)}
+.hero{background:var(--ac2);border-left:5px solid var(--y)}
+.doc{border-top:4px solid var(--y)}
+.Pendiente{background:#fbefc0;color:#6b5400}
+.Aprobada{color:#2b7032}
